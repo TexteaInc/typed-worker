@@ -1,7 +1,7 @@
 {
-  "name": "typed-worker",
+  "name": "@textea/worker",
   "version": "0.0.0",
-  "description": "Type-safe and Promisified API for Web Worker & Iframe",
+  "description": "Type-safe and Promisified API for Web Worker",
   "publishConfig": {
     "access": "public"
   },
@@ -27,12 +27,26 @@
   "devDependencies": {
     "@egoist/prettier-config": "1.0.0",
     "@playwright/test": "^1.25.0",
-    "prettier": "2.5.1",
-    "tsup": "6.2.2",
+    "@textea/dev-kit": "^0.11.3",
+    "@types/web": "^0.0.71",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
+    "eslint": "^8.21.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.7.1",
+    "tsup": "^6.2.2",
     "typescript": "4.7.4",
     "vite": "^3.0.7"
   },
   "dependencies": {
-    "mitt": "^3.0.0"
+    "async-call-rpc": "^6.1.2"
   }
 }

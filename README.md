@@ -1,10 +1,6 @@
-**💛 You can help the author become a full-time open-source maintainer by [sponsoring him on GitHub](https://github.com/sponsors/egoist).**
-
 ---
 
-# typed-worker
-
-[![npm version](https://badgen.net/npm/v/typed-worker)](https://npm.im/typed-worker) [![npm downloads](https://badgen.net/npm/dm/typed-worker)](https://npm.im/typed-worker)
+# @textea/worker
 
 ## Install
 
@@ -20,7 +16,7 @@ Create a `worker.ts`:
 import { handleActions } from "typed-worker"
 
 export const actions = {
-  async sum(payload: { a: number; b: number }) {
+  async sum (payload: { a: number; b: number }) {
     await someHeavyOperation()
     return payload.a + payload.b
   },
@@ -35,7 +31,8 @@ In your `app.ts` where you want to use the worker:
 
 ```ts
 import { createWorker } from "typed-worker"
-import { type Actions } from "./worker"
+// only import type space
+import type { Actions } from "./worker"
 
 const worker = createWorker<Actions>(
   // Require a bundler like Vite, webpack etc
@@ -45,25 +42,11 @@ const worker = createWorker<Actions>(
     }),
 )
 
-const result = await worker.run("sum", { a: 1, b: 2 })
+const result = await worker.sum(1, 2)
 
 expect(result).toBe(3)
 ```
 
-To use the `worker.ts` in an iframe instead of a web worker, you only need to return the `iframe` element in `createWorker` instead:
-
-```ts
-const iframe = createWorker<Actions>(
-  () => document.querySelector<HTMLIframeElement>("#your-iframe-element")!,
-)
-
-const result = await iframe.run("sum", { a: 1, b: 2 })
-```
-
-## Sponsors
-
-[![sponsors](https://sponsors-images.egoist.dev/sponsors.svg)](https://github.com/sponsors/egoist)
-
 ## License
 
-MIT &copy; [EGOIST](https://github.com/sponsors/egoist)
+MIT &copy;
