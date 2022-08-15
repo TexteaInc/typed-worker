@@ -1,7 +1,15 @@
 {
   "name": "@textea/worker",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Type-safe and Promisified API for Web Worker & Iframe",
+  "keywords": [
+    "async-call",
+    "worker",
+    "typescript",
+    "json-rpc",
+    "web-worker",
+    "iframe"
+  ],
   "publishConfig": {
     "access": "public"
   },
