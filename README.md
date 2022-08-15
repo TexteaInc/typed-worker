@@ -1,11 +1,9 @@
----
-
 # @textea/worker
 
 ## Install
 
 ```bash
-npm i typed-worker
+yarn add @textea/worker
 ```
 
 ## Usage
