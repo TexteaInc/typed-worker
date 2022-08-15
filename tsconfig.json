@@ -1,10 +1,21 @@
 {
-  "extends": "./node_modules/@textea/dev-kit/config/tsconfig.root.json",
   "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "strict": true,
     "lib": [
-      "ES2022",
-      "WebWorker"
+      "WebWorker",
+      "ES2021",
+      "DOM"
     ],
-    "incremental": false
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "noEmit": true,
+    "outDir": "dist",
+    "resolveJsonModule": true
   }
 }
