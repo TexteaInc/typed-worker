@@ -6,8 +6,9 @@ test('worker', async ({ page }) => {
     page.waitForSelector('#iframe-result'),
     page.waitForSelector('#worker-result')
   ])
+
   const workerResult = await page.$('#worker-result')
   const iframeResult = await page.$('#iframe-result')
   expect(await workerResult?.textContent()).toBe('3')
-  expect(await iframeResult?.textContent()).toBe('5')
+  expect(await iframeResult?.textContent()).toBe('7')
 })
