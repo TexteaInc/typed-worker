@@ -19,6 +19,7 @@
     "build-fast": "tsup src/index.ts --format cjs,esm",
     "build": "pnpm run build-fast --dts-resolve",
     "test": "playwright test",
+    "lint": "npx eslint . --ext .ts,.tsx,.js --cache --fix",
     "prepublishOnly": "pnpm run build",
     "example": "vite example --port 3001",
     "playwright-install": "playwright install chromium --with-deps"

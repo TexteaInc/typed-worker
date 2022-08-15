@@ -1,28 +1,25 @@
 import {
   AsyncCall,
   AsyncCallOptions,
-  CallbackBasedChannel
+  CallbackBasedChannel, EventBasedChannel
 } from 'async-call-rpc'
 import { WorkerChannel } from 'async-call-rpc/utils/web/worker'
 
 const IFRAME_ID_ATTR = 'data-typed-worker'
 
-export class MainSide implements CallbackBasedChannel {
+export class MainSide implements EventBasedChannel {
   private channel = new MessageChannel()
-  private ready: boolean = false
-  private callback = new Set<Function>()
+  private ready = false
+  private callback = new Set<() => void>()
 
   constructor (
     public readonly iframe: HTMLIFrameElement
-  ) {}
-
-  setup (
-    callback: (payload: unknown) => Promise<unknown>,
-    isValidJSONRPCPayload: (data: unknown) => boolean | Promise<boolean>
   ) {
-    const iframe = this.iframe
     const f = () => {
-      iframe.contentWindow!.postMessage(
+      if (!iframe.contentWindow) {
+        throw new Error('cannot find contentWindow')
+      }
+      iframe.contentWindow.postMessage(
         IFRAME_ID_ATTR,
         '*',
         [this.channel.port2]
@@ -32,9 +29,9 @@ export class MainSide implements CallbackBasedChannel {
         cb()
         this.callback.delete(cb)
       })
+      iframe.removeEventListener('load', f)
     }
     iframe.addEventListener('load', f)
-    return () => iframe.removeEventListener('load', f)
   }
 
   on (listener: (data: unknown) => void) {
@@ -54,19 +51,20 @@ export class MainSide implements CallbackBasedChannel {
 
 export class IframeSide implements CallbackBasedChannel {
   private port: MessagePort | null = null
-  private data = new Set<unknown>()
+  private callback = new Set<() => void>()
 
   setup (
     callback: (payload: unknown) => Promise<unknown | undefined>): (() => void) | void {
     const f = (event: MessageEvent) => {
       if (event.data === IFRAME_ID_ATTR && event.ports[0]) {
         this.port = event.ports[0]
-        this.data.forEach(d => {
-          this.port!.postMessage(d)
-          this.data.delete(d)
+        const port = this.port
+        this.callback.forEach(d => {
+          d()
+          this.callback.delete(d)
         })
-        this.port.onmessage = (event) => {
-          callback(event.data).then(x => x && this.port!.postMessage(x))
+        port.onmessage = (event) => {
+          callback(event.data).then(x => x && port.postMessage(x))
         }
       }
     }
@@ -78,7 +76,7 @@ export class IframeSide implements CallbackBasedChannel {
     if (this.port) {
       this.port.postMessage(data)
     } else {
-      this.data.add(data)
+      this.callback.add(() => this.send(data))
     }
   }
 }
