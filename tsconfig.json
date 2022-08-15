@@ -1,6 +1,10 @@
 {
   "extends": "./node_modules/@textea/dev-kit/config/tsconfig.root.json",
   "compilerOptions": {
+    "lib": [
+      "ES2022",
+      "WebWorker"
+    ],
     "incremental": false
   }
 }
